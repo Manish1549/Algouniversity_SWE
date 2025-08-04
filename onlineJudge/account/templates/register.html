@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - OnlineJudge</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#3b82f6",
+              secondary: "#64748b",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :where([class^="ri-"])::before {
+          content: "\f3c2";
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4"
+  >
+    <div class="w-full max-w-md">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2 font-['Pacifico']">
+          Online Judge
+        </h1>
+        <p class="text-gray-600">Join the competitive programming community</p>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-lg p-8">
+        {% if messages %}
+        <div class="mb-6">
+          {% for message in messages %} {% if message.tags == 'success' %}
+          <div
+            class="bg-green-100 border border-green-200 text-green-700 px-4 py-3 rounded-md mb-3"
+          >
+            <div class="flex items-center">
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-check-line text-green-600"></i>
+              </div>
+              {{ message }}
+            </div>
+          </div>
+          {% else %}
+          <div
+            class="bg-red-100 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-3"
+          >
+            <div class="flex items-center">
+              <div class="w-5 h-5 flex items-center justify-center mr-3">
+                <i class="ri-error-warning-line text-red-600"></i>
+              </div>
+              {{ message }}
+            </div>
+          </div>
+          {% endif %} {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post" action="">
+          {% csrf_token %}
+
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 text-center mb-2">
+              Create Account
+            </h2>
+            <p class="text-gray-600 text-center text-sm">
+              Start your coding journey today
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label
+                for="username"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Username
+              </label>
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-user-line text-gray-400"></i>
+                  </div>
+                </div>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  required
+                  class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                  placeholder="Enter your username"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                for="email"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Email Address
+              </label>
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-mail-line text-gray-400"></i>
+                  </div>
+                </div>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                  placeholder="Enter your email"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                for="password"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Password
+              </label>
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-lock-line text-gray-400"></i>
+                  </div>
+                </div>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  required
+                  class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                  placeholder="Create a password"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                for="confirm_password"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Confirm Password
+              </label>
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <div class="w-5 h-5 flex items-center justify-center">
+                    <i class="ri-lock-2-line text-gray-400"></i>
+                  </div>
+                </div>
+                <input
+                  type="password"
+                  id="confirm_password"
+                  name="confirm_password"
+                  required
+                  class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                  placeholder="Confirm your password"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <button
+              type="submit"
+              class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 px-4 !rounded-button transition duration-200 whitespace-nowrap"
+            >
+              Create Account
+            </button>
+          </div>
+
+          <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+              Already have an account?
+              <a
+                href="/auth/login/"
+                class="text-primary hover:text-blue-700 font-medium transition duration-200"
+              >
+                Sign in here
+              </a>
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <div class="mt-8 text-center">
+        <p class="text-xs text-gray-500">
+          By creating an account, you agree to our
+          <a
+            href="#"
+            class="text-primary hover:text-blue-700 transition duration-200"
+            >Terms of Service</a
+          >
+          and
+          <a
+            href="#"
+            class="text-primary hover:text-blue-700 transition duration-200"
+            >Privacy Policy</a
+          >
+        </p>
+      </div>
+    </div>
+
+    <script id="form-validation">
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirm_password");
+
+        form.addEventListener("submit", function (e) {
+          if (password.value !== confirmPassword.value) {
+            e.preventDefault();
+
+            const existingAlert = document.querySelector(".password-mismatch-alert");
+            if (existingAlert) {
+              existingAlert.remove();
+            }
+
+            const alertDiv = document.createElement("div");
+            alertDiv.className =
+              "bg-red-100 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-4 password-mismatch-alert";
+            alertDiv.innerHTML = `
+                              <div class="flex items-center">
+                                  <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                      <i class="ri-error-warning-line text-red-600"></i>
+                                  </div>
+                                  Passwords do not match. Please try again.
+                              </div>
+                          `;
+
+            const messagesDiv =
+              document.querySelector(".mb-6") || form.firstElementChild;
+            form.insertBefore(alertDiv, messagesDiv.nextSibling);
+
+            confirmPassword.focus();
+          }
+        });
+
+        confirmPassword.addEventListener("input", function () {
+          const existingAlert = document.querySelector(".password-mismatch-alert");
+          if (existingAlert && password.value === confirmPassword.value) {
+            existingAlert.remove();
+          }
+        });
+      });
+    </script>
+
+    <script id="input-interactions">
+      document.addEventListener("DOMContentLoaded", function () {
+        const inputs = document.querySelectorAll(
+          'input[type="text"], input[type="email"], input[type="password"]',
+        );
+
+        inputs.forEach((input) => {
+          input.addEventListener("focus", function () {
+            this.parentElement.classList.add("ring-2", "ring-primary");
+          });
+
+          input.addEventListener("blur", function () {
+            this.parentElement.classList.remove("ring-2", "ring-primary");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

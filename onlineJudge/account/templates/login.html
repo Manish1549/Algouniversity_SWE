@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Online Judge</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#3b82f6",
+              secondary: "#64748b",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :where([class^="ri-"])::before {
+      content: "\f3c2";
+      }
+      .password-toggle {
+      cursor: pointer;
+      transition: color 0.2s;
+      }
+      .password-toggle:hover {
+      color: #3b82f6;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-['Pacifico'] text-primary mb-2">
+          Online Judge
+        </h1>
+        <p class="text-gray-600 text-lg">Login to your account</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-8">
+        <div id="message-container" class="mb-6">
+          <!-- Django messages will be displayed here -->
+            {% if messages %}
+        <div class="alert alert-primary" role="alert">
+          {% for message in messages %} {{ message }} {% endfor %}
+        </div>
+        {% endif %}
+        </div>
+        <form method="post" id="login-form">
+          {% csrf_token %}
+          <div class="mb-6">
+            <label
+              for="username_email"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Username or Email
+            </label>
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none w-5 h-5"
+              >
+                <i class="ri-user-line text-gray-400"></i>
+              </div>
+              <input
+                type="text"
+                id="username_email"
+                name="identifier"
+                required
+                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-colors text-sm"
+                placeholder="Enter username or email"
+              />
+            </div>
+          </div>
+          <div class="mb-6">
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Password
+            </label>
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none w-5 h-5"
+              >
+                <i class="ri-lock-line text-gray-400"></i>
+              </div>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-colors text-sm"
+                placeholder="Enter your password"
+              />
+              <div
+                class="absolute inset-y-0 right-0 pr-3 flex items-center w-5 h-5"
+              >
+                <i
+                  class="ri-eye-line text-gray-400 password-toggle"
+                  id="toggle-password"
+                ></i>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-primary text-white py-3 px-4 rounded-button font-medium hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200 whitespace-nowrap"
+            id="login-btn"
+          >
+            <span id="btn-text">Login</span>
+            <span id="btn-loading" class="hidden">
+              <i class="ri-loader-4-line animate-spin mr-2"></i>
+              Logging in...
+            </span>
+          </button>
+        </form>
+        <div class="mt-6 text-center">
+          <p class="text-gray-600 text-sm">
+            Don't have an account?
+            <a
+              href="/auth/register/"
+              class="text-primary hover:text-blue-700 font-medium transition-colors"
+            >
+              Register here
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="text-center mt-8 text-gray-500 text-sm">
+        <p>&copy; 2025 Online Judge. All rights reserved.</p>
+      </div>
+    </div>
+    <script id="password-toggle-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const passwordInput = document.getElementById("password");
+        const togglePassword = document.getElementById("toggle-password");
+        togglePassword.addEventListener("click", function () {
+          const type =
+            passwordInput.getAttribute("type") === "password" ? "text" : "password";
+          passwordInput.setAttribute("type", type);
+          if (type === "password") {
+            togglePassword.className = "ri-eye-line text-gray-400 password-toggle";
+          } else {
+            togglePassword.className =
+              "ri-eye-off-line text-gray-400 password-toggle";
+          }
+        });
+      });
+    </script>
+    <script id="form-submission-script">
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("login-form");
+        const loginBtn = document.getElementById("login-btn");
+        const btnText = document.getElementById("btn-text");
+        const btnLoading = document.getElementById("btn-loading");
+        form.addEventListener("submit", function () {
+          loginBtn.disabled = true;
+          btnText.classList.add("hidden");
+          btnLoading.classList.remove("hidden");
+        });
+      });
+   

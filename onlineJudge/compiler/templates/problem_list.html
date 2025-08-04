@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coding Problems - Online Judge</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"/>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <div class="w-full">
+      <!-- Header -->
+      <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 flex items-center justify-center">
+              <i class="ri-code-s-slash-line text-2xl text-primary"></i>
+            </div>
+            <h1 class="font-['Pacifico'] text-2xl text-gray-900">onlineJudge</h1>
+          </div>
+          <nav class="flex items-center space-x-8">
+            <a href="#" class="text-gray-700 hover:text-primary transition-colors">Problems</a>
+            <a href="#" class="text-gray-700 hover:text-primary transition-colors">Contests</a>
+            <a href="#" class="text-gray-700 hover:text-primary transition-colors">Leaderboard</a>
+            <a href="#" class="text-gray-700 hover:text-primary transition-colors">Profile</a>
+          </nav>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="text-center mb-12">
+          <h1 class="text-4xl font-bold text-gray-900 mb-4">Coding Problems</h1>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            Challenge yourself with our collection of algorithmic problems.
+            Improve your coding skills and prepare for technical interviews.
+          </p>
+        </div>
+
+        <!-- Problem List Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {% for problem in problems %}
+          <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 overflow-hidden flex flex-col justify-between">
+            
+            <!-- Content -->
+            <div class="p-6 flex-grow">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold text-gray-900">{{ problem.title }}</h3>
+                <span class="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full font-medium">Problem</span>
+              </div>
+              <p class="text-gray-600 mb-6 line-clamp-3">
+                {{ problem.description|truncatewords:25 }}
+              </p>
+              <div class="space-y-4">
+                <div>
+                  <h4 class="text-sm font-semibold text-gray-700 mb-2">Example Input:</h4>
+                  <pre class="bg-gray-50 p-3 rounded text-sm text-gray-800 overflow-x-auto">{{ problem.example_input }}</pre>
+                </div>
+                <div>
+                  <h4 class="text-sm font-semibold text-gray-700 mb-2">Example Output:</h4>
+                  <pre class="bg-gray-50 p-3 rounded text-sm text-gray-800 overflow-x-auto">{{ problem.example_output }}</pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Button fixed at bottom -->
+            <div class="p-4 border-t border-gray-100">
+              <a href="{% url 'submit' problem.id %}"
+                 class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg text-center font-medium block">
+                Solve
+              </a>
+            </div>
+
+          </div>
+          {% empty %}
+          <p class="text-center text-gray-500 col-span-3">No problems available.</p>
+          {% endfor %}
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

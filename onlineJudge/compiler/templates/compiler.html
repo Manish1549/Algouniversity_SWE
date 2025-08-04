@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Challenge Platform</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-50 font-sans">
+    <!-- Navbar -->
+<nav class="bg-white shadow-sm border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
+      <a href="/home/" class="text-3xl font-['Pacifico'] text-primary tracking-wide ml-4">
+        Online Judge
+      </a>
+
+      <!-- Right side buttons -->
+      <div>
+        <a href="/auth/logout/" 
+           class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+          Logout
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+    <div class="min-h-screen flex flex-col lg:flex-row">
+      <!-- ✅ Left Column - Problem Statement -->
+      <div class="w-full lg:w-2/5 p-4 lg:p-6 min-h-screen">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 h-full flex flex-col">
+          <div class="p-6 border-b border-gray-200">
+            <h1 class="text-2xl font-bold text-gray-900">{{problem.title}}</h1>
+          </div>
+
+          <div class="p-6 overflow-y-auto">
+            <div class="prose prose-sm max-w-none">
+              <!-- ✅ Problem Description -->
+              <pre class="text-gray-700 whitespace-pre-wrap">{{ problem.description }}</pre>
+
+              <!-- ✅ Example -->
+              <h3 class="text-lg font-semibold text-gray-900 mb-3 mt-4">Example :</h3>
+              <div class="bg-gray-50 p-4 rounded-md mb-4">
+                <strong>Input:</strong> 
+                <pre class="whitespace-pre-wrap">{{problem.example_input}}</pre>
+                <br />
+                <strong>Output:</strong>
+                <pre class="whitespace-pre-wrap">{{problem.example_output}}</pre>
+                <br />
+              </div>
+
+              <!-- ✅ Constraints -->
+              <h3 class="text-lg font-semibold text-gray-900 mb-3">Constraints:</h3>
+              <ul class="list-disc list-inside text-gray-700 space-y-1">
+                {{problem.constraints|safe}}
+              </ul>
+
+              <!-- ✅ Follow-up -->
+              <h3 class="text-lg font-semibold text-gray-900 mb-3 mt-6">Follow-up:</h3>
+              <p class="text-gray-700">
+                Can you come up with an algorithm that is less than O(n²) time complexity?
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ Right Column - Code Editor + Output -->
+      <div class="w-full lg:w-3/5 p-4 lg:p-6 flex flex-col">
+        <form method="post" action ="{%url 'submit' problem.id %}" class="flex flex-col flex-1">
+          {% csrf_token %}
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-4 flex-1">
+            <div class="p-4 border-b border-gray-200 flex justify-between">
+              <h2 class="text-lg font-semibold text-gray-900">Code Editor</h2>
+              <select id="languageSelect" name="language" class="border rounded-md px-3 py-1">
+                <option value="python">Python</option>
+                <option value="javascript">JavaScript</option>
+                <option value="java">Java</option>
+                <option value="cpp">C++</option>
+                <option value="c">C</option>
+              </select>
+            </div>
+
+            <div class="p-4">
+              <!-- ✅ Monaco Editor -->
+              <div id="monacoEditor" class="w-full h-[450px] lg:h-[550px]  rounded-2xl border border-gray-300 shadow-md overflow-hidden"></div>
+              <input type="hidden" name="code" id="codeInput" />
+
+              <button
+                
+                id="submitBtn"
+                class="mt-4 bg-primary bg-blue-600 text-white font-medium py-2 px-6 rounded-md"
+              >
+                <span id="submitText">Submit Solution</span>
+                <i id="loadingIcon" class="ri-loader-4-line animate-spin ml-2 hidden"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ✅ Output Box -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-3 border-b border-gray-200">
+              <h3 class="text-sm font-semibold text-gray-900 flex items-center">
+                <i class="ri-play-circle-line mr-2"></i> Output
+              </h3>
+            </div>
+            <div class="p-3">
+              <textarea
+                id="outputBox"
+                class="w-full h-24 bg-gray-100 font-mono text-sm p-3 rounded border resize-none"
+                placeholder="Output will appear here..."
+                readonly
+              >Output :{{ submission.output_data }}
+                Verdict: {{submission.Verdict}}
+                error : {{submission.error}}</textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ✅ Monaco Editor CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.51.0/min/vs/loader.min.js"></script>
+    <script>
+      const templates = {
+        python: `# Write your solution here\n`,
+        javascript: `{\n    // Write your solution here\n}`,
+        java: `\n`,
+        cpp: `//write your solution`,
+        c: `\n`,
+      };
+
+      let editor;
+      require.config({ paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.51.0/min/vs" } });
+      require(["vs/editor/editor.main"], function () {
+        editor = monaco.editor.create(document.getElementById("monacoEditor"), {
+          value: '{{last_submission.code}}',
+          language: "{{last_submission.langauge}}",
+          theme: "vs-dark",
+          automaticLayout: true,
+        });
+      });
+
+      document.getElementById("languageSelect").addEventListener("change", function () {
+        const map = { python: "python", javascript: "javascript", cpp: "cpp", java: "java", c: "c" };
+        monaco.editor.setModelLanguage(editor.getModel(), map[this.value]);
+        editor.setValue(templates[this.value] || "");
+      });
+
+      document.querySelector("form").addEventListener("submit", function () {
+        document.getElementById("codeInput").value = editor.getValue();
+      });
+    </script>
+  </body>
+</html>

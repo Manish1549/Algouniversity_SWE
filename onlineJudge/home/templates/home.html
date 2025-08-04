@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Judge - Home</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="bg-gray-900 text-white">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+      <div class="text-2xl font-bold">CodeJudge</div>
+      <nav class="flex items-center space-x-6">
+        <a href="{% url 'problems' %}" class="hover:text-blue-400">Problems</a>
+        <a href="#" class="hover:text-blue-400">Submissions</a>
+        <a href="#" class="hover:text-blue-400">Contests</a>
+        <a href="#" class="hover:text-blue-400">Rankings</a>
+        <form action="" class="ml-4">
+          <input type="text" placeholder="Search problems..."
+                 class="px-3 py-1 rounded text-black text-sm">
+        </form>
+        {% if user.is_authenticated %}
+          <a href="{% url 'logout-user' %}" class="bg-red-500 px-3 py-1 rounded">Logout</a>
+        {% else %}
+          <a href="{% url 'login-user' %}" class="bg-blue-500 px-3 py-1 rounded">Login</a>
+          <a href="{% url 'registration-user' %}" class="bg-green-500 px-3 py-1 rounded">Register</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="flex-grow">
+    <div class="max-w-7xl mx-auto px-6 py-16 text-center">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">Master Programming Through Practice</h1>
+      <p class="text-lg text-gray-600 mb-8">
+        Solve coding problems, compete in contests, and track your progress on our online judge platform.
+      </p>
+
+      <!-- Stats -->
+      <div class="flex justify-center space-x-12 mb-8">
+        <div class="text-center">
+          <p class="text-2xl font-bold text-blue-600">2,847</p>
+          <p class="text-gray-700">Total Problems</p>
+        </div>
+        <div class="text-center">
+          <p class="text-2xl font-bold text-blue-600">45,329</p>
+          <p class="text-gray-700">Active Users</p>
+        </div>
+        <div class="text-center">
+          <p class="text-2xl font-bold text-blue-600">1.2M+</p>
+          <p class="text-gray-700">Submissions</p>
+        </div>
+      </div>
+
+      <!-- Start Button -->
+      <a href="{% url 'problems' %}" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+        Start Solving
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 text-center py-4">
+    © 2025 Online Judge. All rights reserved.
+  </footer>
+
+</body>
+</html>

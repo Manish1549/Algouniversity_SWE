@@ -43,7 +43,8 @@ class Codesubmission(models.Model):
     ]
     verdict= models.CharField(max_length=3,choices=VERDICT_CHOICES,default='WA')
 
-    error = models.TextField(blank=True)
+    error = models.TextField(blank=True) 
+    
 
 
     

@@ -7,18 +7,70 @@ from pathlib import Path
 from compiler.models import Codesubmission,Problem,Testcases
 import uuid
 from django.contrib.auth.decorators import login_required
+import google.generativeai as genai
+from dotenv import load_dotenv
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+load_dotenv()
+
+genai.configure(api_key=os.getenv("API_KEY"))
 
 # Create your views here.
+@login_required
+@csrf_exempt
+def ai_review(request,problem_id):
+    
+    problem = get_object_or_404(Problem,id = problem_id)
+    last_submission = Codesubmission.objects.filter(user=request.user, problem=problem).order_by('-timestamp').first()
+    if not last_submission:
+        return HttpResponse("No previous Submission Found")
+    
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    prompt = f"""
+        Please review this coding problem solution and provide constructive feedback in 3-5 bullet points  and write in short and beutiful structured :
+        
+        Problem Description:
+        {problem.description}
+        
+        User's Solution (in {last_submission.language}):
+        {last_submission.code}
+
+        also error may be there {last_submission.error}
+        
+        Please provide:
+        1. Code quality assessment
+        2. Potential improvements
+        3. Alternative approaches
+        4. Performance considerations
+        """  
+  
+  
+    response = model.generate_content(
+                prompt)
+        
+    
+    feedback_items = [
+        line.strip() for line in response.text.split('\n') 
+        if line.strip().startswith('-')
+    ]
+    
+    context = {"last_submission":last_submission,"problem":problem,"response_text":response.text}
+    return render(request,'ai_review.html',context)
+ 
+
+
+
 @login_required
 def submit(request,problem_id):
     problem = get_object_or_404(Problem, id=problem_id)
     last_submission = Codesubmission.objects.filter(user=request.user,problem=problem).order_by('timestamp').first()
     if request.method == "POST":
         
+        user_name = request.user
         language = request.POST.get('language')
         code = request.POST.get('code')
         testcases = problem.testcases_set.all()
-        
+        problem_name = problem
 
         results =[]
         all_passed = True     
@@ -43,7 +95,7 @@ def submit(request,problem_id):
                   break
             if output_data.strip() != testcase.expected_output.strip():
                 results.append(f"Testcase {test_num} failed")
-                error = f"Expected {testcase.expected_output.strip()} but got {output_data.strip()}"
+                error = f"Expected {testcase.expected_output.strip()} but got {output_data}"
                 verdict = 'WA'
                 all_passed = False
                 break
@@ -60,6 +112,8 @@ def submit(request,problem_id):
          
         #save to db
         submission = Codesubmission.objects.create(
+            problem = problem_name,
+            user = user_name,
             language =  language,
             code = code,
             input_data = input_data,
@@ -68,7 +122,7 @@ def submit(request,problem_id):
             error = error
         )
         submission.save()
-        return render(request,'compiler.html',{"submission" : submission,"problem" :problem})
+        return render(request,'compiler.html',{"submission" : submission,"problem" :problem,"last_submission":submission})
     #get 
     return render(request,'compiler.html',{"problem":problem,"last_submission":last_submission})
 

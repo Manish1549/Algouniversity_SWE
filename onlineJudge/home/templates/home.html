@@ -3,69 +3,352 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Judge - Home</title>
+  <title>CodeJudge - Online Programming Platform</title>
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { primary: "#3b82f6", secondary: "#8dd3c7" },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+  </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
-
-  <!-- Navbar -->
-  <header class="bg-gray-900 text-white">
-    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-      <div class="text-2xl font-bold">CodeJudge</div>
-      <nav class="flex items-center space-x-6">
-        <a href="{% url 'problems' %}" class="hover:text-blue-400">Problems</a>
-        <a href="#" class="hover:text-blue-400">Submissions</a>
-        <a href="#" class="hover:text-blue-400">Contests</a>
-        <a href="#" class="hover:text-blue-400">Rankings</a>
-        <form action="" class="ml-4">
-          <input type="text" placeholder="Search problems..."
-                 class="px-3 py-1 rounded text-black text-sm">
-        </form>
-        {% if user.is_authenticated %}
-          <a href="{% url 'logout-user' %}" class="bg-red-500 px-3 py-1 rounded">Logout</a>
-        {% else %}
-          <a href="{% url 'login-user' %}" class="bg-blue-500 px-3 py-1 rounded">Login</a>
-          <a href="{% url 'registration-user' %}" class="bg-green-500 px-3 py-1 rounded">Register</a>
-        {% endif %}
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero Section -->
-  <main class="flex-grow">
-    <div class="max-w-7xl mx-auto px-6 py-16 text-center">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">Master Programming Through Practice</h1>
-      <p class="text-lg text-gray-600 mb-8">
-        Solve coding problems, compete in contests, and track your progress on our online judge platform.
-      </p>
-
-      <!-- Stats -->
-      <div class="flex justify-center space-x-12 mb-8">
-        <div class="text-center">
-          <p class="text-2xl font-bold text-blue-600">2,847</p>
-          <p class="text-gray-700">Total Problems</p>
+<body class="bg-gray-50 text-gray-900">
+  <header class="bg-white shadow-sm border-b border-gray-200">
+    <nav class="w-full px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-8">
+          <div class="font-['Pacifico'] text-2xl text-primary">Online Judge</div>
+          <div class="hidden md:flex items-center space-x-6">
+            <a href="{% url 'problems' %}" class="text-gray-700 hover:text-primary transition-colors">Problems</a>
+            <a href="#" class="text-gray-700 hover:text-primary transition-colors">Contests</a>
+            <a href="#" class="text-gray-700 hover:text-primary transition-colors">Rankings</a>
+            <a href="#" class="text-gray-700 hover:text-primary transition-colors">Discussions</a>
+          </div>
         </div>
-        <div class="text-center">
-          <p class="text-2xl font-bold text-blue-600">45,329</p>
-          <p class="text-gray-700">Active Users</p>
-        </div>
-        <div class="text-center">
-          <p class="text-2xl font-bold text-blue-600">1.2M+</p>
-          <p class="text-gray-700">Submissions</p>
+        <div class="flex items-center space-x-4">
+          {% if user.is_authenticated %}
+            <a href="{% url 'logout-user' %}" class="px-6 py-2 bg-red-500 text-white hover:bg-opacity-90 transition-colors whitespace-nowrap !rounded-button">Logout</a>
+          {% else %}
+            <a href="{% url 'login-user' %}" class="px-4 py-2 text-gray-700 hover:text-primary transition-colors whitespace-nowrap !rounded-button">Sign In</a>
+            <a href="{% url 'registration-user' %}" class="px-6 py-2 bg-primary text-white hover:bg-opacity-90 transition-colors whitespace-nowrap !rounded-button">Get Started</a>
+          {% endif %}
         </div>
       </div>
+    </nav>
+  </header>
 
-      <!-- Start Button -->
-      <a href="{% url 'problems' %}" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
-        Start Solving
-      </a>
-    </div>
+  <main>
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5">
+      <div class="relative z-10 w-full max-w-7xl mx-auto px-6">
+        <div class="text-center space-y-8">
+          <div class="space-y-4">
+            <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">Master Programming Through Practice</h1>
+            <p class="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">Solve coding problems, compete in contests, and track your progress on our online judge platform.</p>
+          </div>
+          <div class="flex justify-center">
+            <a href="{% url 'problems' %}" class="px-8 py-4 bg-primary text-white font-semibold hover:bg-opacity-90 transition-colors whitespace-nowrap !rounded-button text-lg">Start Coding Now</a>
+          </div>
+          <div class="grid grid-cols-3 gap-8 pt-8">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-primary">{{problemCount}}+</div>
+              <div class="text-gray-600">Problems</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-primary">{{userCount}}+</div>
+              <div class="text-gray-600">Active Users</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-primary">{{submissionCount}}+</div>
+              <div class="text-gray-600">Submissions</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid lg:grid-cols-3 gap-8">
+          <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-200">
+            <div class="flex items-center mb-6">
+              <div class="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-lg mr-4">
+                <i class="ri-trophy-line"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-gray-900">Upcoming Contests</h3>
+            </div>
+            <div class="space-y-4">
+              <div class="border-l-4 border-primary pl-4">
+                <h4 class="font-semibold text-gray-900">Weekly Programming Challenge</h4>
+                <p class="text-gray-600 text-sm">Starts in 2 days 14 hours</p>
+                <p class="text-gray-500 text-sm">Duration: 3 hours</p>
+              </div>
+              <div class="border-l-4 border-secondary pl-4">
+                <h4 class="font-semibold text-gray-900">Algorithm Mastery Contest</h4>
+                <p class="text-gray-600 text-sm">Starts in 5 days 8 hours</p>
+                <p class="text-gray-500 text-sm">Duration: 4 hours</p>
+              </div>
+              <div class="border-l-4 border-gray-300 pl-4">
+                <h4 class="font-semibold text-gray-900">Data Structure Deep Dive</h4>
+                <p class="text-gray-600 text-sm">Starts in 1 week 2 days</p>
+                <p class="text-gray-500 text-sm">Duration: 2 hours</p>
+              </div>
+            </div>
+            <button class="w-full mt-6 py-2 text-primary font-medium hover:bg-primary hover:text-white transition-colors !rounded-button border border-primary">View All Contests</button>
+          </div>
+          <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-200">
+            <div class="flex items-center mb-6">
+              <div class="w-10 h-10 flex items-center justify-center bg-secondary text-white rounded-lg mr-4">
+                <i class="ri-code-line"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-gray-900">Latest Submissions</h3>
+            </div>
+            
+            <div class="space-y-4">
+              {% for sub in submissions %}
+              <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                <div>
+                  <p class="font-medium text-gray-900">{{sub.user.username}}</p>
+                  <p class="text-sm text-gray-600">{{sub.problem.title}}</p>
+                </div>
+                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded">{{sub.get_verdict_display}}</span>
+              </div>
+             {% empty %}
+                <p>No submissions yet.</p>
+            {% endfor %}
+            </div>
+            <button class="w-full mt-6 py-2 text-secondary font-medium hover:bg-secondary hover:text-white transition-colors !rounded-button border border-secondary">View All Submissions</button>
+          </div>
+          <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-200">
+            <div class="flex items-center mb-6">
+              <div class="w-10 h-10 flex items-center justify-center bg-yellow-500 text-white rounded-lg mr-4">
+                <i class="ri-medal-line"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-gray-900">Top Performers</h3>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <span class="w-8 h-8 flex items-center justify-center bg-yellow-100 text-yellow-800 font-bold rounded-full text-sm mr-3">1</span>
+                  <div>
+                    <p class="font-medium text-gray-900">jennifer_algo</p>
+                    <p class="text-sm text-gray-600">2,847 points</p>
+                  </div>
+                </div>
+                <div class="w-6 h-6 flex items-center justify-center">
+                  <i class="ri-trophy-fill text-yellow-500"></i>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <span class="w-8 h-8 flex items-center justify-center bg-gray-100 text-gray-800 font-bold rounded-full text-sm mr-3">2</span>
+                  <div>
+                    <p class="font-medium text-gray-900">david_master</p>
+                    <p class="text-sm text-gray-600">2,634 points</p>
+                  </div>
+                </div>
+                <div class="w-6 h-6 flex items-center justify-center">
+                  <i class="ri-medal-fill text-gray-400"></i>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <span class="w-8 h-8 flex items-center justify-center bg-orange-100 text-orange-800 font-bold rounded-full text-sm mr-3">3</span>
+                  <div>
+                    <p class="font-medium text-gray-900">lisa_expert</p>
+                    <p class="text-sm text-gray-600">2,521 points</p>
+                  </div>
+                </div>
+                <div class="w-6 h-6 flex items-center justify-center">
+                  <i class="ri-medal-fill text-orange-500"></i>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <span class="w-8 h-8 flex items-center justify-center bg-gray-100 text-gray-800 font-bold rounded-full text-sm mr-3">4</span>
+                  <div>
+                    <p class="font-medium text-gray-900">robert_pro</p>
+                    <p class="text-sm text-gray-600">2,398 points</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="w-full mt-6 py-2 text-yellow-600 font-medium hover:bg-yellow-500 hover:text-white transition-colors !rounded-button border border-yellow-500">View Full Rankings</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold text-gray-900 mb-4">Platform Features</h2>
+          <p class="text-xl text-gray-600">Everything you need to improve your programming skills</p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="text-center p-6">
+            <div class="w-16 h-16 flex items-center justify-center bg-primary text-white rounded-xl mx-auto mb-4">
+              <i class="ri-code-s-slash-line text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Multiple Languages</h3>
+            <p class="text-gray-600">Support for C++, Java, Python, JavaScript, Go, and more programming languages.</p>
+          </div>
+          <div class="text-center p-6">
+            <div class="w-16 h-16 flex items-center justify-center bg-secondary text-white rounded-xl mx-auto mb-4">
+              <i class="ri-flash-line text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Real-time Judging</h3>
+            <p class="text-gray-600">Get instant feedback on your submissions with our fast and reliable judging system.</p>
+          </div>
+          <div class="text-center p-6">
+            <div class="w-16 h-16 flex items-center justify-center bg-green-500 text-white rounded-xl mx-auto mb-4">
+              <i class="ri-test-tube-line text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Custom Test Cases</h3>
+            <p class="text-gray-600">Test your solutions with custom inputs before submitting to ensure correctness.</p>
+          </div>
+          <div class="text-center p-6">
+            <div class="w-16 h-16 flex items-center justify-center bg-purple-500 text-white rounded-xl mx-auto mb-4">
+              <i class="ri-bar-chart-line text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Performance Analytics</h3>
+            <p class="text-gray-600">Track your progress with detailed statistics and performance insights.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-20 bg-primary text-white">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <h2 class="text-4xl font-bold mb-4">Ready to Start Your Coding Journey?</h2>
+        <p class="text-xl mb-8 opacity-90">Join thousands of developers who are already improving their skills on our platform.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          {% if user.is_authenticated %}
+            <a href="{% url 'problems' %}" class="px-8 py-4 bg-white text-primary font-semibold hover:bg-gray-100 transition-colors whitespace-nowrap !rounded-button">Solve Problems</a>
+          {% else %}
+            <a href="{% url 'registration-user' %}" class="px-8 py-4 bg-white text-primary font-semibold hover:bg-gray-100 transition-colors whitespace-nowrap !rounded-button">Create Free Account</a>
+            <a href="{% url 'problems' %}" class="px-8 py-4 border-2 border-white text-white font-semibold hover:bg-white hover:text-primary transition-colors whitespace-nowrap !rounded-button">Explore Problems</a>
+          {% endif %}
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-300 text-center py-4">
-    © 2025 Online Judge. All rights reserved.
+  <footer class="bg-gray-900 text-gray-300">
+    <div class="max-w-7xl mx-auto px-6 py-16">
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div>
+          <div class="font-['Pacifico'] text-2xl text-white mb-4">Online Judge</div>
+          <p class="text-gray-400 mb-4">The premier online judge platform for competitive programming and skill development.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+              <i class="ri-twitter-line"></i>
+            </a>
+            <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+              <i class="ri-github-line"></i>
+            </a>
+            <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
+              <i class="ri-discord-line"></i>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold mb-4">Platform</h3>
+          <ul class="space-y-2">
+            <li><a href="{% url 'problems' %}" class="hover:text-white transition-colors">Problems</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Contests</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Rankings</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Submissions</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold mb-4">Resources</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-white transition-colors">Documentation</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">API Reference</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Tutorials</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Community</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold mb-4">Support</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Bug Reports</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Feature Requests</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400">&copy; 2025 onlineJudge. All rights reserved.</p>
+        <div class="flex space-x-6 mt-4 md:mt-0">
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
   </footer>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Mobile menu functionality
+      const mobileMenuButton = document.createElement("button");
+      mobileMenuButton.className = "md:hidden w-8 h-8 flex items-center justify-center text-gray-700";
+      mobileMenuButton.innerHTML = '<i class="ri-menu-line"></i>';
+      const nav = document.querySelector("nav .flex");
+      nav.appendChild(mobileMenuButton);
+      
+      mobileMenuButton.addEventListener("click", function () {
+        const mobileMenu = document.querySelector(".mobile-menu");
+        if (mobileMenu) {
+          mobileMenu.classList.toggle("hidden");
+        }
+      });
+
+      // Smooth scroll for anchor links
+      const links = document.querySelectorAll('a[href^="#"]');
+      links.forEach((link) => {
+        link.addEventListener("click", function (e) {
+          const href = this.getAttribute("href");
+          if (href.startsWith("#")) {
+            e.preventDefault();
+            const targetId = href.substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+              targetElement.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
